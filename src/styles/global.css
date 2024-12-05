@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased bg-zinc-900 text-zinc-300 font-body;
+  }
+}
+
+@layer utilities {
+  .masked-element {
+    -webkit-mask-image: linear-gradient(225deg, transparent 0%, transparent 40px, black 40px);
+    mask-image: linear-gradient(225deg, transparent 0%, transparent 40px, black 40px);
+  }
+}
+
+@layer components {
+  .h1{
+    @apply font-heading font-black text-5xl md:text-6xl lg:text-7xl max-w-3xl 
+  }
+  .h2 {
+    @apply font-heading font-black text-4xl md:text-5xl lg:text-6xl;
+  }
+  .h3{
+    @apply font-heading font-black text-3xl;
+  }
+  .body-text{
+    @apply text-xl lg:text-2xl text-zinc-400;
+  }
+
+  .description{
+    @apply  text-xl lg:text-2xl text-zinc-400;
+  }
+  
+
+  /* Uncomment these classes if needed, or delete them */
+  /* .h3 { @apply ...; } */
+  /* .h4 { @apply ...; } */
+  /* .h5 { @apply ...; } */
+  /* .body-1 { @apply ...; } */
+  /* .body-2 { @apply ...; } */
+  /* .caption { @apply ...; } */
+  /* .tagline { @apply ...; } */
+}

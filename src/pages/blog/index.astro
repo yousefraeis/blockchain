@@ -1,0 +1,110 @@
+---
+import CutCornerButton from "../../components/CutCornerButton"
+import DefaultLayout from "../../layouts/Default.astro"
+import Hexagon from "../../components/Hexagon"
+import Card from "../../components/Card"
+import Tag from "../../components/Tag" // Import Tag component
+import { getPostColorFromCategory } from "../../utils/PostUtils"
+import {motion} from 'framer-motion'
+
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const latestPost = posts[0]
+---
+
+<DefaultLayout>
+    <!-- Hero Section -->
+    <section class='py-24 md:py-60 relative overflow-x-clip'>
+        <div class='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+            <Hexagon
+                size={800} client:load
+                duration ={30}
+            />
+        </div>
+        <div class='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+            <Hexagon
+                size={1200}
+                reverse
+                duration={50} client:load
+            />
+        </div>
+        <div class='container'>
+            <div class="max-w-xl lg:max-w-2xl mx-auto ">
+                <p class='uppercase font-extrabold text-center text-zinc-500 tracking-wider'>
+                    Latest Post
+                </p>
+                <h1 class='h1 text-center mt-4 '>
+                    {latestPost.data.title}
+                </h1>
+                <p class='text-center text-xl md:text-2xl max-w-xl mx-auto mt-6 text-zinc-400'>
+                    {latestPost.data.description}
+                </p>
+                <div class='flex justify-center mt-10 '>
+                    <a href={`/blog/${latestPost.slug}`}>
+                        <CutCornerButton>Read More</CutCornerButton>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Blog Posts Section -->
+    <section class="py-32 bg-zinc-900/30 backdrop-blur-sm relative">
+        <div class="container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex flex-col gap-8 lg:gap-12">
+                    {posts.map(({ data: { title, description, category },slug }, postIndex) => {
+                        return (
+                            <motion.a 
+                            client:load
+                            initial={{opacity:0,y:20}}
+                            whileInView={{opacity:1,y:0}}
+                            viewport={{once:true,amount:0.5}}
+                            transition={{duration: 0.5,ease:'easeIn'}}
+                            href={`/blog/${slug}`} className={`${postIndex %2 === 0 ?'': 'block md:hidden'}`}>
+                            <Card
+                                key={postIndex}
+                                buttonText={'Read More'}
+                                color={getPostColorFromCategory(category)}
+                            >
+                                <Tag color={getPostColorFromCategory(category)}>
+                                    {category}
+                                </Tag>
+                                <h3 class='h3 mt-4'>{title}</h3>
+                                <p class='text-lg text-zinc-400 mt-6'>{description}</p>
+                            </Card></motion.a>
+                        );
+                    })}
+                </div>
+
+                <div class="hidden md:flex flex-col gap-8 lg:gap-12 mt-24">
+                    {posts.map(({ data: { title, description, category },slug }, postIndex) => {
+                        return (
+                            <motion.a
+                            client:load
+                            initial={{opacity:0,y:20}}
+                            whileInView={{opacity:1,y:0}}
+                            viewport={{once:true,amount:0.5}}
+                            transition={{duration: 0.5,ease:'easeIn'}}
+                            href={`/blog/${slug}`} className={`${postIndex %2 === 0 ?'md:hidden': ''}`}> 
+                            <Card
+                                key={postIndex}
+                                buttonText={'Read More'}
+                                color={getPostColorFromCategory(category)}
+                            >
+                                <Tag color={getPostColorFromCategory(category)}>
+                                    {category}
+                                </Tag>
+                                <h3 class='h3 mt-4'>{title}</h3>
+                                <p class='text-lg text-zinc-400 mt-6'>{description}</p>
+                            </Card></motion.a>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
+    </section>  
+</DefaultLayout>

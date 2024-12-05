@@ -1,0 +1,70 @@
+---
+import { getCollection } from "astro:content";
+import InteriorContent from "../components/InteriorContent.astro";
+import InteriorHero from "../components/InteriorHero.astro";
+import DefaultLayout from "../layouts/Default.astro";
+import CutCornerButton from "../components/CutCornerButton";
+import Input from "../components/Input.astro";
+import Textarea from "../components/Textarea.astro";
+---
+
+<DefaultLayout>
+    <InteriorHero>
+        <p class="uppercase font-extrabold text-center text-zinc-500 tracking-wider">Let's Talk</p>
+        <h1 class="font-heading font-black text-5xl md:text-6xl lg:text-7xl text-center mt-4">Contact Us</h1>
+        <p class="text-center text-xl md:text-2xl mt-6 max-w-xl mx-auto text-zinc-400">
+            We're here to help and answer any questions you may have. Reach out to us to learn more about our services, get support, or to apply for positions.
+        </p>
+    </InteriorHero>
+
+    <InteriorContent>
+        <div class="max-w-xl mx-auto">
+            <h2 class="font-heading font-black text-3xl">What can we help you with?</h2>
+            <form 
+                class="flex flex-col mt-8" 
+                name="contact" 
+                method="POST" 
+                data-netlify="true"
+                netlify-honeypot="bot-field"
+            >
+                {/* Hidden input for bot protection */}
+                <input type="hidden" name="form-name" value="contact" />
+                <p class="hidden">
+                    <label>
+                        Don't fill this out if you're human: <input name="bot-field" />
+                    </label>
+                </p>
+
+                <label for="name" class="mt-4">Name</label>
+                <Input 
+                    type="text" 
+                    name="name" 
+                    id="name" 
+                    required
+                    class="mt-1" 
+                />
+
+                <label for="email" class="mt-4">Email</label>
+                <Input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    required
+                    class="mt-1" 
+                />
+                
+                <label for="message" class="mt-4">Message</label>
+                <Textarea 
+                    name="message" 
+                    id="message" 
+                    required
+                    class="mt-1" 
+                />
+
+                <CutCornerButton type="submit" className="mt-4">
+                    Send Message
+                </CutCornerButton>
+            </form>
+        </div>
+    </InteriorContent>
+</DefaultLayout>

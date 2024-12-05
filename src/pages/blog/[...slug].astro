@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import DefaultLayout from '../../layouts/Default.astro';
+import InteriorHero from '../../components/InteriorHero.astro';
+import InteriorContent from '../../components/InteriorContent.astro';
+import Tag from '../../components/Tag';
+import { getPostColorFromCategory } from '../../utils/PostUtils';
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const {
+	data:{
+		category,
+		title,
+		description,
+		author:{
+			name,
+			title:
+			authorTitle
+		}
+	}
+} = post;
+const { Content } = await post.render();
+---
+
+
+<DefaultLayout>
+	<!-- Hero Section -->
+	<InteriorHero>
+		<div class="max-w-xl lg:max-w-2xl mx-auto ">
+			<div class="flex justify-center ">
+				<Tag color={getPostColorFromCategory(category)}>
+					{category}
+				</Tag>
+			</div>
+			<h1 class='h1 text-center mt-4 '>
+				{title}
+			</h1>
+			<p class='text-center text-xl md:text-2xl max-w-xl mx-auto mt-8 text-zinc-400'>
+				{description}
+			</p>
+			<div class='flex flex-col items-center justify-center mt-8'>
+				<div class="size-16 rounded-full bg-zinc-700 bg-cover  bg-center">
+				</div>	
+				<div class="font-extrabold text-lg mt-3">{name || 'Unknown Author'}</div>
+				<div class="text-zinc-500">{authorTitle || 'No title available'}</div>
+			</div> 
+		</div>
+	</InteriorHero>
+
+	<InteriorContent>
+		<!-- @tailwindcss/typography -->
+		<div class="prose prose-invert prose-lg mx-auto prose-zinc prose-headings:font-heading prose-headings:font-black prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:lg:text-5xl prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:lg:text-4xl">
+			<Content />
+		</div>
+	</InteriorContent>
+	</DefaultLayout>
