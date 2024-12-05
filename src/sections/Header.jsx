@@ -63,7 +63,7 @@ const HeaderSection = () => {
                                 <div className='absolute inset-0 flex flex-col items-center justify-center gap-1.5'>
                                     <div
                                         className={`w-6 h-0.5 bg-zinc-300 transform transition-all duration-300 ease-in-out origin-center
-                                            ${isOpen ? 'rotate-45 translate-y-[3px]' : ''}`}
+                                            ${isOpen ? 'rotate-45 translate-y-[4px]' : ''}`}
                                     />
                                     <div
                                         className={`w-6 h-0.5 bg-zinc-300 transform transition-all duration-300 ease-in-out origin-center
